@@ -85,7 +85,7 @@ class IPLookupApp:
         
         self.show_initial_message()
         
-        footer = tk.Label(root, text="⟨ IP GEOLOCATION TOOL • POWERED BY IPAPI • 2025 ⟩",
+        footer = tk.Label(root, text="⟨ IP GEOLOCATION TOOL • POWERED BY 4755262 • 2025 ⟩",
                          font=("Courier New", 9),
                          fg="#666666", bg="#0a0a0a")
         footer.pack(side=tk.BOTTOM, pady=10)
@@ -240,3 +240,4 @@ if __name__ == "__main__":
     app = IPLookupApp(root)
 
     root.mainloop()
+
