@@ -12,11 +12,9 @@ class IPLookupApp:
         self.root.configure(bg="#0a0a0a")
         self.root.resizable(False, False)
         
-        # Style configuration
         self.style = ttk.Style()
         self.style.theme_use('clam')
         
-        # Header
         header_frame = tk.Frame(root, bg="#0a0a0a")
         header_frame.pack(pady=20, fill=tk.X)
         
@@ -33,7 +31,6 @@ class IPLookupApp:
         separator1 = tk.Frame(root, bg="#00ff00", height=2)
         separator1.pack(fill=tk.X, padx=50, pady=10)
         
-        # Search Frame
         search_frame = tk.Frame(root, bg="#1a1a1a", relief=tk.RIDGE, bd=3)
         search_frame.pack(pady=20, padx=50, fill=tk.X)
         
@@ -61,7 +58,6 @@ class IPLookupApp:
                                     command=self.lookup_ip)
         self.search_btn.pack(side=tk.LEFT, padx=10, pady=15)
         
-        # Results Frame
         self.results_frame = tk.Frame(root, bg="#1a1a1a", relief=tk.RIDGE, bd=3)
         self.results_frame.pack(pady=20, padx=50, fill=tk.BOTH, expand=True)
         
@@ -70,7 +66,6 @@ class IPLookupApp:
                                 fg="#00ff00", bg="#1a1a1a")
         results_title.pack(pady=10)
         
-        # Scrollable results
         canvas = tk.Canvas(self.results_frame, bg="#1a1a1a", 
                           highlightthickness=0, bd=0)
         scrollbar = ttk.Scrollbar(self.results_frame, orient="vertical", 
@@ -88,10 +83,8 @@ class IPLookupApp:
         canvas.pack(side="left", fill="both", expand=True, padx=10, pady=10)
         scrollbar.pack(side="right", fill="y")
         
-        # Initial message
         self.show_initial_message()
         
-        # Footer
         footer = tk.Label(root, text="⟨ IP GEOLOCATION TOOL • POWERED BY IPAPI • 2025 ⟩",
                          font=("Courier New", 9),
                          fg="#666666", bg="#0a0a0a")
@@ -130,7 +123,6 @@ class IPLookupApp:
         if not country_code or len(country_code) != 2:
             return "🏳️"
         
-        # Conversion du code pays en emoji drapeau
         return chr(127397 + ord(country_code[0])) + chr(127397 + ord(country_code[1]))
     
     def lookup_ip(self):
@@ -144,17 +136,14 @@ class IPLookupApp:
         self.root.update()
         
         try:
-            # API Call
             response = requests.get(f"https://ipapi.co/{ip_address}/json/", timeout=10)
             data = response.json()
             
             if data.get('error'):
                 raise Exception(data.get('reason', 'IP invalide'))
             
-            # Clear previous results
             self.clear_results()
             
-            # Display flag and country
             flag = self.get_flag_emoji(data.get('country_code', ''))
             country_display = f"{flag}  {data.get('country_name', 'N/A')}"
             
@@ -167,7 +156,6 @@ class IPLookupApp:
             separator = tk.Frame(self.scrollable_frame, bg="#00ff00", height=2)
             separator.pack(fill=tk.X, padx=20, pady=10)
             
-            # Display all information
             info_data = [
                 ("IP ADDRESS", data.get('ip', 'N/A')),
                 ("TYPE", data.get('version', 'N/A')),
@@ -199,7 +187,6 @@ class IPLookupApp:
             for i, (label, value) in enumerate(info_data):
                 self.create_info_row(label, str(value), i)
             
-            # Google Maps link
             if data.get('latitude') and data.get('longitude'):
                 maps_frame = tk.Frame(self.scrollable_frame, bg="#1a1a1a")
                 maps_frame.pack(pady=20)
@@ -218,8 +205,7 @@ class IPLookupApp:
                                        font=("Courier New", 9),
                                        fg="#666666", bg="#1a1a1a")
                 coords_label.pack()
-            
-            # Timestamp
+        
             timestamp = tk.Label(self.scrollable_frame,
                                text=f"Scan effectué le: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}",
                                font=("Courier New", 9),
@@ -252,4 +238,5 @@ class IPLookupApp:
 if __name__ == "__main__":
     root = tk.Tk()
     app = IPLookupApp(root)
+
     root.mainloop()
